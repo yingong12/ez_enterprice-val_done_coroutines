@@ -10,6 +10,7 @@ import (
 	"val_done_coroutines/library"
 	"val_done_coroutines/library/env"
 	"val_done_coroutines/logger"
+	"val_done_coroutines/logic"
 	"val_done_coroutines/providers"
 
 	"github.com/joho/godotenv"
@@ -37,11 +38,11 @@ func bootStrap() (err error) {
 		{
 			Receiver:       &providers.DBAccount,
 			ConnectionName: "gorm-core",
-			DBName:         env.GetStringVal("DB_ACCOUNT_RW_NAME"),
-			Host:           env.GetStringVal("DB_ACCOUNT_RW_HOST"),
-			Port:           env.GetStringVal("DB_ACCOUNT_RW_PORT"),
-			UserName:       env.GetStringVal("DB_ACCOUNT_RW_USERNAME"),
-			Password:       env.GetStringVal("DB_ACCOUNT_RW_PASSWORD"),
+			DBName:         env.GetStringVal("DB_COMPANY_RW_NAME"),
+			Host:           env.GetStringVal("DB_COMPANY_RW_HOST"),
+			Port:           env.GetStringVal("DB_COMPANY_RW_PORT"),
+			UserName:       env.GetStringVal("DB_COMPANY_RW_USERNAME"),
+			Password:       env.GetStringVal("DB_COMPANY_RW_PASSWORD"),
 			MaxLifeTime:    env.GetIntVal("DB_MAX_LIFE_TIME"),
 			MaxOpenConn:    env.GetIntVal("DB_MAX_OPEN_CONN"),
 			MaxIdleConn:    env.GetIntVal("DB_MAX_IDLE_CONN"),
@@ -60,12 +61,15 @@ func bootStrap() (err error) {
 			return e
 		}
 	}
-	//boot main thread
+
+	//
+	_, stop := logic.Start()
 	//wait for sys signals
 	exitChan := make(chan os.Signal)
 	signal.Notify(exitChan, os.Interrupt, os.Kill, syscall.SIGTERM)
 	select {
 	case sig := <-exitChan:
+		stop()
 		log.Println("Doing cleaning works before shutdown...")
 		shutdownLogger()
 		log.Println("You abandoned me, bye bye", sig)
