@@ -16,6 +16,7 @@ type MsgData struct {
 	Age       string `json:"age"`
 	Partition int32  `json:"partition"`
 	Offset    int64  `json:"offset"`
+	Error     string `json:"ERROR"`
 }
 
 //
@@ -74,7 +75,8 @@ type ENT struct {
 	Path  string `gorm:"column:file_path"`
 }
 
-const STATE_SUCCEED = 1
+const STATE_SUCCEED uint8 = 1
+const STATE_FAILED uint8 = 2
 
 func worker(dataChan chan MsgData, wg *sync.WaitGroup, errChan chan ConsumerError) {
 	//50个worker
@@ -85,9 +87,13 @@ func worker(dataChan chan MsgData, wg *sync.WaitGroup, errChan chan ConsumerErro
 			}()
 			for dt := range dataChan {
 				//业务
+				state := STATE_SUCCEED
+				if dt.Error != "" {
+					state = STATE_FAILED
+				}
 				en := ENT{
 					//成功
-					State: STATE_SUCCEED,
+					State: state,
 					Path:  dt.FilePath,
 				}
 				tx := providers.DBAccount.Table("t_valuates")
