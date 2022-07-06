@@ -1,5 +1,5 @@
 make --dry-run --always-make --keep-going --print-directory
-make: Entering directory `/Users/yin/Work/找工作/ez_enterprice-val_done_coroutines'
+make: Entering directory `/Users/yin/Work/Ownprojects/估值管理系统/ez_enterprice-val_done_coroutines'
 go run main.go bootstrap.go
-make: Leaving directory `/Users/yin/Work/找工作/ez_enterprice-val_done_coroutines'
+make: Leaving directory `/Users/yin/Work/Ownprojects/估值管理系统/ez_enterprice-val_done_coroutines'
  

@@ -7,7 +7,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 
 # This program built for i386-apple-darwin11.3.0
 
-# Make data base, printed on Fri Jun 24 10:08:47 2022
+# Make data base, printed on Fri Jul  1 00:13:08 2022
 
 # Variables
 
@@ -24,7 +24,7 @@ VSCODE_LOG_NATIVE = false
 # automatic
 @F = $(notdir $@)
 # makefile
-CURDIR := /Users/yin/Work/找工作/ez_enterprice-val_done_coroutines
+CURDIR := /Users/yin/Work/Ownprojects/估值管理系统/ez_enterprice-val_done_coroutines
 # makefile
 SHELL = /bin/sh
 # environment
@@ -40,7 +40,7 @@ VSCODE_VERBOSE_LOGGING = true
 # environment
 __CFBundleIdentifier = com.microsoft.VSCode
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /var/folders/mv/vnpljmzd19v5xb2jhfc_9x340000gn/T/vscode-ipc-82bbdd7b-dab6-4759-b431-9f5ad28eaac5.sock
+VSCODE_IPC_HOOK_EXTHOST = /var/folders/mv/vnpljmzd19v5xb2jhfc_9x340000gn/T/vscode-ipc-30d52691-696a-4381-90ac-3738b65a2974.sock
 # environment
 VSCODE_CWD = /
 # environment
@@ -52,7 +52,7 @@ GOPATH = /Users/yin/go
 # makefile (from `Makefile', line 2)
 port = 8686
 # environment
-LaunchInstanceID = 9CEDFFB1-AC84-40AC-943D-08BE64C5172C
+LaunchInstanceID = 8BF8B567-6E3B-4FD5-ACFF-D9BE54C65D6E
 # environment
 VSCODE_LOG_STACK = false
 # environment
@@ -60,13 +60,13 @@ ELECTRON_RUN_AS_NODE = 1
 # default
 .FEATURES := target-specific order-only second-expansion else-if archives jobserver check-symlink
 # environment
-SSH_AUTH_SOCK = /private/tmp/com.apple.launchd.TcX7jNrjFV/Listeners
+SSH_AUTH_SOCK = /private/tmp/com.apple.launchd.KUOdXz4jao/Listeners
 # automatic
 %F = $(notdir $%)
 # environment
 VSCODE_PIPE_LOGGING = true
 # environment
-PWD = /Users/yin/Work/找工作/ez_enterprice-val_done_coroutines
+PWD = /Users/yin/Work/Ownprojects/估值管理系统/ez_enterprice-val_done_coroutines
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = undefined
 # environment
@@ -148,7 +148,7 @@ os = linux
 # environment
 LANG = C
 # environment
-VSCODE_PID = 681
+VSCODE_PID = 504
 # variable set hash-table stats:
 # Load=69/1024=7%, Rehash=0, Collisions=4/97=4%
 
@@ -158,9 +158,9 @@ VSCODE_PID = 681
 
 # Directories
 
-# . (device 16777232, inode 24852931): 16 files, no impossibilities.
+# . (device 16777231, inode 26171398): 18 files, no impossibilities.
 
-# 16 files, no impossibilities in 1 directories.
+# 18 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -235,7 +235,7 @@ run:
 # strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
 # strcache free: total = 4087 / max = 4087 / min = 4087 / avg = 4087
 
-# Finished Make data base on Fri Jun 24 10:08:47 2022
+# Finished Make data base on Fri Jul  1 00:13:08 2022
 
  
 make: *** No rule to make target `all'.  Stop.

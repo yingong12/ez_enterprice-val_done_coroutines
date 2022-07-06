@@ -11,12 +11,13 @@ import (
 )
 
 type MsgData struct {
-	TaskID    string `json:"task_id"`
-	FilePath  string `json:"file_path"`
-	Age       string `json:"age"`
-	Partition int32  `json:"partition"`
-	Offset    int64  `json:"offset"`
-	Error     string `json:"ERROR"`
+	TaskID        string `json:"task_id"`
+	FilePath      string `json:"file_path"`
+	Age           string `json:"age"`
+	Partition     int32  `json:"partition"`
+	Offset        int64  `json:"offset"`
+	Error         string `json:"ERROR"`
+	EstimateValue string `json:"estimate_value"`
 }
 
 //
@@ -71,8 +72,9 @@ func Start() (err error, stop func()) {
 }
 
 type ENT struct {
-	State uint8  `gorm:"column:state"`
-	Path  string `gorm:"column:file_path"`
+	State         uint8  `gorm:"column:state"`
+	Path          string `gorm:"column:file_path"`
+	EstimateValue string `gorm:"column:estimate_value"`
 }
 
 const STATE_SUCCEED uint8 = 1
@@ -93,8 +95,9 @@ func worker(dataChan chan MsgData, wg *sync.WaitGroup, errChan chan ConsumerErro
 				}
 				en := ENT{
 					//成功
-					State: state,
-					Path:  dt.FilePath,
+					State:         state,
+					Path:          dt.FilePath,
+					EstimateValue: dt.EstimateValue,
 				}
 				tx := providers.DBAccount.Table("t_valuates")
 				tx.Where("valuate_id", dt.TaskID).
