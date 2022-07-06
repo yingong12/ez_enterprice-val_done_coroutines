@@ -2,6 +2,7 @@ package logic
 
 import (
 	"encoding/json"
+	"log"
 	"sync"
 	"val_done_coroutines/library"
 	"val_done_coroutines/library/env"
@@ -17,7 +18,7 @@ type MsgData struct {
 	Partition     int32  `json:"partition"`
 	Offset        int64  `json:"offset"`
 	Error         string `json:"ERROR"`
-	EstimateValue string `json:"value"`
+	EstimateValue int    `json:"value"`
 }
 
 //
@@ -30,9 +31,12 @@ type ConsumerError struct {
 func Start() (err error, stop func()) {
 	dtChan := make(chan MsgData)
 	workerWG := sync.WaitGroup{}
+	loggerDone := make(chan struct{})
 	workerWG.Add(50)
 	var closeDispatcher func() error
 	dispatcherDone := make(chan struct{})
+	errChan := make(chan ConsumerError, 5000)
+	//
 	stop = func() {
 		//关闭dispatcher
 		closeDispatcher()
@@ -41,7 +45,16 @@ func Start() (err error, stop func()) {
 		close(dtChan)
 		//关闭worker
 		workerWG.Wait()
+		//关闭logger
+		close(errChan)
+		<-loggerDone
 	}
+	go func() {
+		defer func() { loggerDone <- struct{}{} }()
+		for err := range errChan {
+			log.Println(err)
+		}
+	}()
 	//kafka
 	handler := func(msg *sarama.ConsumerMessage) {
 		//业务
@@ -65,8 +78,6 @@ func Start() (err error, stop func()) {
 	}
 	//dispatcher
 	_, closeDispatcher = library.Start(handler, config, dispatcherDone)
-	//启动worker协程
-	errChan := make(chan ConsumerError, 5000)
 	worker(dtChan, &workerWG, errChan)
 	return
 }
@@ -74,7 +85,7 @@ func Start() (err error, stop func()) {
 type ENT struct {
 	State         uint8  `gorm:"column:state"`
 	Path          string `gorm:"column:file_path"`
-	EstimateValue string `gorm:"column:estimate_value"`
+	EstimateValue int    `gorm:"column:estimate_value"`
 }
 
 const STATE_SUCCEED uint8 = 1
