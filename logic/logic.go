@@ -17,7 +17,7 @@ type MsgData struct {
 	Partition     int32  `json:"partition"`
 	Offset        int64  `json:"offset"`
 	Error         string `json:"ERROR"`
-	EstimateValue string `json:"estimate_value"`
+	EstimateValue string `json:"value"`
 }
 
 //
