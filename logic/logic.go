@@ -83,13 +83,16 @@ func Start() (err error, stop func()) {
 }
 
 type ENT struct {
-	State         uint8  `gorm:"column:state"`
-	Path          string `gorm:"column:file_path"`
-	EstimateValue int    `gorm:"column:estimate_value"`
+	State uint8  `gorm:"column:state"`
+	Path  string `gorm:"column:file_path"`
 }
 
 const STATE_SUCCEED uint8 = 1
 const STATE_FAILED uint8 = 2
+
+type ENmodel struct {
+	appID string `gorm:"column:app_id"`
+}
 
 func worker(dataChan chan MsgData, wg *sync.WaitGroup, errChan chan ConsumerError) {
 	//50个worker
@@ -106,14 +109,20 @@ func worker(dataChan chan MsgData, wg *sync.WaitGroup, errChan chan ConsumerErro
 				}
 				en := ENT{
 					//成功
-					State:         state,
-					Path:          dt.FilePath,
-					EstimateValue: dt.EstimateValue,
+					State: state,
+					Path:  dt.FilePath,
 				}
-				tx := providers.DBAccount.Table("t_valuates")
-				tx.Where("valuate_id", dt.TaskID).
-					Updates(en)
+				enEnter := ENmodel{}
+				tx := providers.DBAccount.Begin()
+				//更新估值表
+				tx = tx.Table("t_valuates")
+				tx = tx.Where("valuate_id", dt.TaskID).Find(&enEnter)
+				tx = tx.Where("valuate_id", dt.TaskID).Updates(en)
+				// 更新企业
+				tx = tx.Table("t_enterpsie").Where("app_id", enEnter.appID).Update("estimate_value", dt.EstimateValue)
+				//TODO: 这里需要拿企业id。 从valutes里面拿
 				if tx.Error != nil {
+					tx.Rollback()
 					errChan <- ConsumerError{
 						Partition: dt.Partition,
 						Offset:    dt.Offset,
